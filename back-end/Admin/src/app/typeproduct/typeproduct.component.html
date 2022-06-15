@@ -1,0 +1,84 @@
+<div class="row">
+    <button class="btn btn-success" style="margin-left: 20px;" data-toggle="modal" data-target="#exampleModal">Thêm loại sản phẩm</button>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+            <th>Mã loại sản phẩm</th>
+            <th>Tên loại sản phẩm</th>
+            <th>Chức năng</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let item of type | paginate: { itemsPerPage: 10, currentPage: p }">
+            <td>{{item.Ma_LSP}}</td>
+            <td>{{item.Ten_LSP}}</td>
+            <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" (click)="getIDType(item.Ma_LSP)">Sửa loại sản phẩm</button>
+            </td>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="fromProduct">
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã loại sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Ma_LSP">
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên loại sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Ten_LSP">
+            </div>
+            <!---------------------------------------------------->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--From 2-->
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sửa sản loại sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="fromProduct2">
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã loại sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="Ma" disabled>
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên loại sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="Name" formControlName="Ten_LSP">
+            </div>
+      
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmitFix()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

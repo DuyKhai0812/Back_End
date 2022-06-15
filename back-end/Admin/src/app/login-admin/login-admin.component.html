@@ -1,0 +1,33 @@
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<section style="height: 100vh;" class="body">
+  
+    <div style="background-image: url(images/arka.jpg); background-attachment: fixed; background-size: cover; width: 100%; height: 100vh; position: relative;"  >
+    <div class="baslik">
+        <b style="font-size: 101px; text-align: center; margin-bottom: -21px; display: block;"><img></b>
+        <span style="font-size: 19px; text-align: center; display: block; margin-bottom: 25px;">Trang quản lý website Buôn bán nông sản sạch</span>
+    </div>
+    <section>
+    <form method="post" action="" [formGroup]="loginFrom">
+        <div class="arkalogin">
+            <div class="loginbaslik">Đăng nhập</div>
+            <hr style="border: 1px solid #ccc;">
+            <input formControlName="account" class="giris" type="text" name="kadi" placeholder="User">
+            <input formControlName="password" class="giris" type="password" name="sifre" placeholder="•••••">
+            <a (click)="onSubmitLogin()" target="blank"><input class="butonlogin" type="submit" name="" value="Đăng nhập"></a>
+            <div class="form-group" style="margin-top: 20px;">
+                <select  formControlName="test">
+                  <option value="1">Nhân viên</option>
+                  <option value="0">Admin</option>
+                </select>
+              </div>
+        </div>
+    </form>
+    </section><br>
+    
+    </div>
+</section>
+   

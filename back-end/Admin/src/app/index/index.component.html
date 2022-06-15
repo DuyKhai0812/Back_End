@@ -1,0 +1,147 @@
+
+<div class="container-fluid">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    </div>
+    <div class="row">
+        <!-- Earnings (Day) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Doanh thu ngày {{ today | date:'dd/MM/YYYY' }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> {{this.doanhThuD | currency:'VND'}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Earnings (Monthly) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Doanh thu tháng {{ today | date:'MM' }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> {{this.doanhThuT | currency:'VND'}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Earnings (Year) Card Example -->
+        <div class="col-xl-4 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Doanh thu năm {{ today | date:'YYYY' }}</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800"> {{this.doanhThuN | currency:'VND'}}</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+         <!-- Earnings (Year) Card Example -->
+        <!--Newss-->
+        <!-- Project Card Example -->
+        <div class="col-lg-6 mb-4">
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Tổng doanh thu từng loại sản phẩm</h6>
+            </div>
+            <div class="card-body">
+                <ngx-charts-bar-vertical
+                                    [view]="view"
+                                    scheme="cool"
+                                    [results]="va"
+                                    [gradient]="gradient"
+                                    [xAxisTickFormatting]="xAxisTickFormattingFn"
+                                    [dataLabelFormatting]="formatDataLabel "
+                                    [yAxisTickFormatting]="yAxisTickFormattingFn"
+                                    [xAxis]="showXAxis"
+                                    [yAxis]="showYAxis"
+                                    [legendTitle] = 'Legend2'
+                                    [legend]="showLegend"
+                                    [showXAxisLabel]="showXAxisLabel"
+                                    [showYAxisLabel]="showYAxisLabel"
+                                    [xAxisLabel]="xAxisLabel"
+                                    [yAxisLabel]="yAxisLabel"
+                                    (select)="onSelect($event)">
+                                    (mouseenter)="onSelect($event)"
+                                </ngx-charts-bar-vertical>
+            </div>
+        </div>
+    </div>
+        <!-- Earnings (Year) Card Example -->
+        
+        <!--Newss-->
+        <!-- Project Card Example -->
+    <div class="col-lg-6 mb-4">  
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Doanh thu từng nhà sản xuất theo tháng</h6>
+            </div>
+            <div class="card-body">
+                <ngx-charts-line-chart
+                                    [view]="view"
+                                    [results]="we"
+                                    scheme="cool"
+                                    [legend]="legend"
+                                    [showXAxisLabel]="showXAxisLabel2"
+                                    [showYAxisLabel]="showYAxisLabel2"
+                                    [xAxis]="xAxis2"
+                                    [yAxis]="yAxis2"
+                                    [xAxisLabel]="xAxisLabel2"
+                                    [yAxisLabel]="yAxisLabel2" 
+                                    [legendTitle] = 'Legend'
+                                    >
+                </ngx-charts-line-chart>
+            </div>
+        </div>
+    </div>      
+    <div class="col-lg-6 mb-4">  
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Doanh thu từng tháng</h6>
+            </div>
+            <div class="card-body">
+                <ngx-charts-line-chart
+                [view]="view"
+                scheme="cool"
+                [legend]="legend"
+                [showXAxisLabel]="showXAxisLabel3"
+                [showYAxisLabel]="showYAxisLabel3"
+                [xAxis]="xAxis3"
+                [yAxis]="yAxis3"
+                [xAxisLabel]="xAxisLabel3"
+                [yAxisLabel]="yAxisLabel3"
+                [timeline]="timeline"
+                [results]="weare"
+                [legendTitle] = 'Legend3'
+                [timeline]="timeline3"
+                >
+                </ngx-charts-line-chart>
+            </div>
+        </div>
+    </div>     
+    </div>
+</div>
+                    
+

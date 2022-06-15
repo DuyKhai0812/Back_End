@@ -1,0 +1,126 @@
+<div class="row">
+    <button class="btn btn-success" style="margin-left: 20px;" data-toggle="modal" data-target="#exampleModal">Thêm sản phẩm</button>
+      <div class="form-outline" style="margin-left: 20px;">
+        <input type="search" id="form1" class="form-control" [(ngModel)]="SP" (ngModelChange)="emtySearch()" placeholder="Nhập tên sản phẩm"/>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="SearchNC()">
+        <i class="fas fa-search"></i>
+      </button>
+    
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+            <th>Mã sản phẩm</th>
+            <th>Tên sản phẩm</th>
+            <th>Hình</th>
+            <th>Mô tả</th>
+            <th>Mã nhà sản xuất</th>
+            <th>Mã loại sản phẩm</th>
+            <th >Đơn giá &nbsp;<i (click)="sortPirce()" class="fa fa-sort"></i></th>
+            <th>Giảm giá  &nbsp;<i (click)="sortID()" class="fa fa-sort"></i></th>
+            <th>Giá sau khi giảm</th>
+            <th>Kích hoạt</th>
+            <th>Chức năng</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let item of sanpham | paginate: { itemsPerPage: 5, currentPage: p }">
+            <td>{{item.Ma_SP}}</td>
+            <td>{{item.Ten_SP}}</td>
+            <td><img src="https://firebasestorage.googleapis.com/v0/b/test-img-fa3b9.appspot.com/o{{item.Hinh}}?alt=media&token=11d84b6e-ba6e-46b1-944c-8f1138dc415c" style="width: 100px;height: 100px;" ></td>
+            <td>{{item.Mo_Ta}}</td>
+            <td>{{item.Ma_NSX}}</td>
+            <td>{{item.Ma_LSP}}</td>
+            <td>{{item.Don_Gia | currency:'VND'}}</td> 
+            <td>{{item.Giam_Gia}}%</td>
+            <td>{{item.Gia | currency:'VND'}}</td>
+            <td>
+              
+              <label class="switch">
+                <input type="checkbox" [checked]="item.Kich_Hoat == 1" (change)="fixCheck(item.Kich_Hoat,item.Ma_SP)">
+                <span class="slider round"></span>
+              </label>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary" routerLink="/fixProduct/{{item.Ma_SP}}">Sửa sản phẩm</button>
+            </td>
+      </tbody>
+        <div class="clearfix">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </table>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form [formGroup]="fromProduct">
+            <div class="form-group ">
+              <label for="exampleFormControlInput1" >Mã sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Ma_SP"> 
+              <button type="submit" class="btn btn-primary mb-2" (click)="onClickCheckProduct()">Kiểm tra</button>
+            </div>  
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Ten_SP">
+            </div> 
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="name" class="control-label">Thêm ảnh</label>
+              <div class="col-sm-3">
+                <input type="file" name="file_img" (change)="upload($event)" accept="*.png.jpg">
+              </div>
+            </div>
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Đơn giá</label>
+              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Don_Gia">
+            </div>
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mô tả</label>
+              <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" formControlName="Mo_Ta"></textarea>
+            </div>
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Nhà sản xuất</label>
+              <select class="form-control" id="exampleFormControlSelect1" formControlName="Ma_NSX">
+                <option *ngFor="let items of nsx" value="{{items.Ma_NSX}}">{{items.Ten_NSX}}</option>
+              </select>
+            </div>
+            <!---------------------------------------------------->       
+            <div class="form-group" >
+              <label for="exampleFormControlInput1" >Loại sản phẩm</label>
+              <select class="form-control" id="exampleFormControlSelect1" formControlName="Ma_LSP">
+                <option *ngFor="let items of loai" value="{{items.Ma_LSP}}">{{items.Ten_LSP}}</option>
+              </select>
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Giảm giá</label>
+              <input type="number" min="0" max="100"  maxlength="2" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Giam_Gia">
+            </div>
+            <!---------------------------------------------------->  
+              <div class="form-group">
+                <label for="exampleFormControlTextarea1">Kích hoạt</label>&nbsp;&nbsp;:
+                <input type="radio" value="1" name="Kich_Hoat"   formControlName="Kich_Hoat"> Kích hoạt &nbsp;&nbsp;&nbsp;
+                <input type="radio" value="0" name="Kich_Hoat"   formControlName="Kich_Hoat"> Không kích hoạt<br>
+              </div>
+            <!---------------------------------------------------->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

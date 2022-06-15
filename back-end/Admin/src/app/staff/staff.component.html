@@ -1,0 +1,156 @@
+<div class="row">
+    <button class="btn btn-success" style="margin-left: 20px;" data-toggle="modal" data-target="#exampleModal">Thêm nhân viên</button>
+    
+    
+      <button class="btn btn-success dropdown-toggle" style="margin-left: 20px;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Bộ lọc
+      </button>
+      <div class="form-outline" style="margin-left: 20px;">
+        <input type="search" id="form1" class="form-control" [(ngModel)]="NV" (ngModelChange)="emtySearch()" placeholder="Nhập tên nhân viên"/>
+      </div>
+      <button type="button" class="btn btn-primary" (click)="SearchNC()">
+        <i class="fas fa-search"></i>
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" (click)="ShowStaffNotAccount()">Các nhân viên chưa có tài khoản</a>
+        <a class="dropdown-item" (click)="ShowStaffHasAccount()">Các nhân viên có tài khoản</a>
+      </div>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+            <th>Mã nhân viên </th>
+            <th>Tên nhân viên</th>
+            <th>Ngày sinh</th>
+            <th>Giới tính &nbsp;<i (click)="sortSex()" class="fa fa-sort"></i></th>
+            <th>Địa chỉ</th>
+            <th>Số điện thoại</th>
+            <th>Chức năng</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let item of staff | paginate: { itemsPerPage: 10, currentPage: p }">
+            <td>{{item.Ma_NV}}</td>
+            <td>{{item.Ten_NV}}</td>
+            <td>{{item.Ngay_Sinh}}</td>
+            <td>{{checkSex(item.Gioi_Tinh)}}{{gender}}</td>
+            <td>{{item.Dia_Chi}}</td>
+            <td>{{item.SDT}}</td>
+            <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" (click)="GetIDStaff(item.Ma_NV)">Sửa thông tin nhân viên</button>
+              {{AddAccount(item.Check)}}
+              <a class="btn btn-primary" routerLink="/register/{{item.Ma_NV}}" role="button" [hidden]="show">Thêm tài khoản</a> 
+            </td>
+      </tbody>
+      
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="staffData">
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã nhân viên</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName="Ma_NV" >
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên nhân viên</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='Ten_NV'>
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Ngày sinh</label>
+              <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='Ngay_Sinh'>
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Giới tính</label>
+              <select class="form-control" id="exampleFormControlSelect1" formControlName='Gioi_Tinh'>
+                <option  value="0">Nữ </option>
+                <option  value="1">Nam </option>
+              </select>
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Địa chỉ</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='Dia_Chi'>
+            </div>
+            <!----------------------------------------------------> 
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Số điện thoại</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='SDT' (keypress)="numberOnly($event)">
+            </div>
+            <!----------------------------------------------------> 
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+   <!--From 2-->
+   <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sửa thông tin nhân viên</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="fromProduct2">
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã nhân viên</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="code" disabled>
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên nhân viên</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="name" formControlName="Ten_NV">
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Ngày sinh</label>
+              <input type="date" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="birth" formControlName="Ngay_Sinh">
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Giới tính</label>
+              <select class="form-control" id="exampleFormControlSelect1" [value]="sex" formControlName="Gioi_Tinh">
+                <option  value="0">Nữ </option>
+                <option  value="1">Nam </option>
+              </select>
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Địa chỉ</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="adress" formControlName="Dia_Chi">
+            </div>
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Số điện thoại</label>
+              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="phone" formControlName="SDT">
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="submitFix()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

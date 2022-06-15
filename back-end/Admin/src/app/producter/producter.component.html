@@ -1,0 +1,100 @@
+<div class="row">
+    <button class="btn btn-success" style="margin-left: 20px;" data-toggle="modal" data-target="#exampleModal">Thêm nhà cung cấp</button>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+            <th>Mã nhà cung cấp</th>
+            <th>Tên nhà cung cấp</th>
+            <th>Độ tin cậy &nbsp;<i (click)="sortReliability()" class="fa fa-sort"></i></th>
+            <th>Chức năng</th>
+          </tr>
+      </thead>
+      <tbody *ngFor="let item of producterr | paginate: { itemsPerPage: 10, currentPage: p }">
+            <td>{{item.Ma_NSX}}</td>
+            <td>{{item.Ten_NSX}}</td>
+            <td>
+              <div class="progress">
+                <div class="progress-bar progress-bar-striped" role="progressbar" [style.width] = "item.Do_Tin_Cay + '%'" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100">{{item.Do_Tin_Cay}} %</div>
+              </div>
+            </td>
+            <td>
+              <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg" (click)="ShowDataFix(item.Ma_NSX)">Sửa nhà cung cấp</button>
+            </td>
+      </tbody>
+      <pagination-controls (pageChange)="p = $event"></pagination-controls>
+    </table>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]='fromProducter'>
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã nhà cung cấp</label>
+              <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='Ma_NSX'>
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên nhà cung cấp</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" formControlName='Ten_NSX'>
+            </div>
+            <!---------------------------------------------------->
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Độ tin cậy</label>
+              <input type="range" class="form-control-range" id="formControlRange" name="vol" min="0" max="100" (change)="setRam1(ramSelector1.value)" value="0" #ramSelector1>
+              {{selectedRam1}} %
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="onSubmit()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--From 2-->
+  <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Sửa sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body" >
+          <form [formGroup]="fromProducter2">
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Mã nhà cung cấp</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="Ma" disabled>
+            </div>                               
+            <!---------------------------------------------------->  
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên nhà cung cấp</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx" [value]="Ten" formControlName ="Ten_NSX">
+            </div>
+            <!---------------------------------------------------->
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Độ tin cậy</label>
+              <input type="range" class="form-control-range" id="formControlRange" name="vol" min="0" max="100" (change)="setRam(ramSelector.value)" [value]="Reliability" #ramSelector>
+              {{selectedRam}} %
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary" (click)="submitFixData()">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>

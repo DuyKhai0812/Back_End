@@ -1,0 +1,14 @@
+
+
+<div id="wrapper">
+  <app-menu *ngIf="showHead"></app-menu>
+  <div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+      <app-show-acc *ngIf="showHead"></app-show-acc>
+      <router-outlet></router-outlet>
+    </div>  
+  </div>
+</div>
+<footer class="bg-light text-center text-lg-start">
+  <app-fotter *ngIf="showHead"></app-fotter>
+</footer>

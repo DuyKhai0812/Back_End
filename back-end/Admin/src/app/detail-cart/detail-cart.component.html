@@ -1,0 +1,167 @@
+<div class="container-fluid">
+    <div class="card">
+        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead class="text-muted">
+                <tr class="small text-uppercase">
+                    <th >Mã đơn hàng</th>
+                    <th >Ngày bán</th>
+                    <th >Giao hàng</th>
+                    <th >Mã khách hàng</th>
+                    <th >Mã nhân viên</th>
+                    <th>Ghi chú</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td> <a data-container="body" data-toggle="popover" data-placement="top" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">{{Ma_DH}}</a></td>
+                    <td>{{Date}}</td>
+                    <td>
+                        <div class="track">
+                            <div class="step active" [hidden]="this.Ship != 0"> <span class="icon"> <i class="fa fa-check" ></i> </span> <span class="text">Xác nhận đơn hàng</span> </div>
+                            <div class="step active" [hidden]="this.Ship != 1"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Chuẩn bị đơn hàng</span> </div>
+                            <div class="step active" [hidden]="this.Ship != 2"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Đang trên đường giao </span> </div>
+                            <div class="step active" [hidden]="this.Ship != 3"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đã nhận hàng</span> </div>
+                        </div>
+                    </td>
+                    <td>{{ID_KH}}</td>
+                    <td>{{ID_NV}}</td>
+                    <td>{{Note}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-9">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table table-borderless table-shopping-cart">
+                        <thead class="text-muted">
+                            <tr class="small text-uppercase">
+                                <th scope="col">Product</th>
+                                <th scope="col" width="120">Quantity</th>
+                                <th scope="col" width="120">Price</th>
+                                <th scope="col" width="120">Total</th>
+                                <th scope="col" class="text-right d-none d-md-block" width="200"></th>
+                            </tr>
+                        </thead>
+                        <tbody *ngFor="let item of decart">
+                            <tr>
+                                <td>
+                                    <figure class="itemside align-items-center">
+                                        <div class="aside"><img src="https://firebasestorage.googleapis.com/v0/b/test-img-fa3b9.appspot.com/o{{item.Hinh}}?alt=media&token=11d84b6e-ba6e-46b1-944c-8f1138dc415c" class="img-sm"></div>
+                                        <figcaption class="info"> <a href="#" class="title text-dark" data-abc="true">{{item.Ten_SP}}</a>
+                                            <p class="text-muted small">{{item.Ma_LSP}} <br> NSX: {{item.Ma_NSX}}</p>
+                                        </figcaption>
+                                    </figure>
+                                </td>
+                                <td> <select class="form-control" [value]="item.So_Luong" disabled>
+                                        <option>1</option>
+                                        <option>2</option>
+                                        <option>3</option>
+                                        <option>4</option>
+                                        <option>5</option>
+                                        <option>6</option>
+                                        <option>7</option>
+                                        <option>8</option>
+                                        <option>9</option>
+                                        <option>10</option>
+                                    </select> </td>
+                                <td>
+                                    <div class="price-wrap"> <var class="price">{{item.Gia | currency:'VND'}}</var><small class="text-muted">{{item.Don_Gia | currency:'VND'}} each </small> </div>
+                                </td>
+
+                                <td>
+                                    <div class="price-wrap"> <var class="price">{{item.Thanh_Tien | currency:'VND'}}</var> </div>
+                                </td>
+                                <td class="text-right d-none d-md-block"> {{filter(Status,Ship)}}<a  data-toggle="modal" data-target=".bd-example-modal-sm" class="btn btn-light btn-round" data-abc="true" [hidden]="this.showw ==0" (click)="getIDCard(item.Ma_SP)" style="color: white;"> Remove</a> </td>
+                            </tr>
+                           
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </aside>
+        <aside class="col-lg-3">
+            <div class="card">
+                <div class="card-body">
+                    <dl class="dlist-align">
+                        <dt>Total price:</dt>
+                        <dd class="text-right ml-3">{{Money | currency:'VND'}}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Discount:</dt>
+                        <dd class="text-right text-danger ml-3">{{Sale | currency:'VND'}}</dd>
+                    </dl>
+                    <dl class="dlist-align">
+                        <dt>Total:</dt>
+                        <dd class="text-right text-dark b ml-3"><strong>{{Total | currency:'VND'}}</strong></dd>
+                    </dl>
+                    <hr> <a href="/cart" class="btn btn-out btn-primary btn-square btn-main" data-abc="true">Lưu đơn hàng</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+</div>
+
+<!--From Fix Order-->
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Thêm sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form >
+            <div class="form-group ">
+              <label for="exampleFormControlInput1" >Mã sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx"> 
+            </div>  
+            <!---------------------------------------------------->       
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Tên sản phẩm</label>
+              <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="xxx">
+            </div> 
+            <!---------------------------------------------------->           
+            <div class="form-group">
+              <label for="exampleFormControlInput1">Đơn giá</label>
+              <input type="number" class="form-control" id="exampleFormControlInput1" placeholder="xxx" >
+            </div>
+            <!---------------------------------------------------->         
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div class="modal fade bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Xóa sản phẩm</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Bạn chắt chắn muốn xóa sản phẩm</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="deleteProduct(SP)">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,85 @@
+<div class="row">
+  <div class="form-outline" style="margin-left: 20px;">
+    <input type="search" id="form1" class="form-control" [(ngModel)]="NV" (ngModelChange)="emtySearch()" placeholder="Nhập mã đơn hàng"/>
+  </div>
+  <button type="button" class="btn btn-primary" (click)="SearchNC()">
+    <i class="fas fa-search"></i>
+  </button>
+    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+      <thead>
+          <tr>
+            <th>Mã đơn hàng</th>
+            <th>Ngày bán hàng</th>
+            <th>Mã khách hàng</th>
+            <th>Mã nhân viên</th>
+            <th>Địa chỉ giao hàng</th>
+            <th>Ghi chú</th>
+            <th>Tổng tiền</th>
+            <th>Khuyến mãi</th>
+            <th>Thành tiền</th>
+            <th>Giao hàng</th>
+            <th>Tình trạng giao hàng</th>
+            <th>Chức năng</th>
+
+          </tr>
+      </thead>
+      <tbody *ngFor="let item of cart | paginate: { itemsPerPage: 5, currentPage: p }">
+            <td>{{item.Ma_DH}}</td>
+            <td>{{item.Ngay_Ban}}</td>
+            <td>{{item.Ma_KH}}</td>
+            <td>{{item.Ma_NV}}</td>
+            <td>{{item.Dia_Chi_Giao}}</td> 
+            <td>{{item.Ghi_Chu}}</td>
+            <td>{{item.Tong_Tien | currency:'VND'}}</td>
+            <td>{{item.Khuyen_Mai}}%</td>
+            <td>{{item.Thanh_Tien | currency:'VND'}}</td>
+            <td>
+                <div class="track">
+                    <div class="step active" [hidden]="item.Giao_Hang != 0"> <span class="icon"> <i class="fa fa-check" ></i> </span> <span class="text">Xác nhận đơn hàng</span> </div>
+                    <div class="step active" [hidden]="item.Giao_Hang != 1"> <span class="icon"> <i class="fa fa-user"></i> </span> <span class="text"> Chuẩn bị đơn hàng</span> </div>
+                    <div class="step active" [hidden]="item.Giao_Hang != 2"> <span class="icon"> <i class="fa fa-truck"></i> </span> <span class="text"> Đang trên đường giao </span> </div>
+                    <div class="step active" [hidden]="item.Giao_Hang != 3"> <span class="icon"> <i class="fa fa-box"></i> </span> <span class="text">Đã nhận hàng</span> </div>
+                </div>
+            </td>
+            <td>
+              <i class="fas fa-check-square fa-3x" [hidden]="item.Trang_Thai == 0"></i>
+              <i class="fas fa-window-close fa-3x" [hidden]="item.Trang_Thai == 1"></i>
+            </td>
+            <td>
+                <button type="button" class="btn btn-primary" routerLink="/detail_cart/{{item.Ma_DH}}">Chi tiết đơn hàng</button><br>
+                {{checkStatus(item.Trang_Thai,item.Giao_Hang)}}
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#exampleModal" style="margin-top:20px ;" [hidden]="status == 0" (click)="getIDCard(item.Ma_DH)">Hủy đơn hàng</button>
+                <button type="button" class="btn btn-success" style="margin-top:20px ;" (click)="upShipp(item.Ma_DH)" [hidden]="item.Giao_Hang >= 3 || item.Trang_Thai == 0">Bước giao hàng tiếp theo</button>
+            </td>
+            
+      </tbody>
+        <div class="clearfix">
+          <pagination-controls (pageChange)="p = $event"></pagination-controls>
+        </div>
+    </table>
+  </div>
+
+  <!--From Fix Order-->
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Hủy đơn</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Bạn chắc chắn muốn hủy đơn hàng ?(Đơn hàng sau khi hủy sẻ không kích hoạt lại được)
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" (click)="cancelOrder(cart2.Ma_DH)" data-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--End From Fix Order-->
+  
